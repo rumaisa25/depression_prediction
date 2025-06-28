@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depression Predictor - University Students</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #faf5ff 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            margin-top: 40px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .brain-icon {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            padding: 0.75rem;
+            border-radius: 50%;
+            color: white;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #111827;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+
+        /* Motivational Section */
+        .motivational-section {
+            margin-bottom: 4rem;
+            margin-top: 60px;
+        }
+
+        .motivational-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .motivational-image {
+            position: relative;
+        }
+
+        .motivational-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .motivational-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .motivational-content {
+            padding: 2rem;
+            background: linear-gradient(135deg, #eff6ff, #faf5ff);
+            display: flex;
+            align-items: center;
+        }
+
+        .motivational-text h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+
+        .motivational-text p {
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        .motivational-highlight {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2563eb;
+            font-weight: 500;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .card-header p {
+            color: #bfdbfe;
+            margin: 0;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-icon {
+            color: #2563eb;
+            font-size: 1.25rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .radio-input {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #2563eb;
+        }
+
+        .rating-scale {
+            margin-bottom: 2rem;
+
+        }
+
+        .rating-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .rating-options {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .separator {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 2rem 0;
+        }
+
+        /* Button Styles */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1.5rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d4ed8, #6d28d9);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            padding: 0.75rem 2rem;
+            border: 2px solid #d1d5db;
+            background: white;
+            color: #374151;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card-header {
+            position: relative;
+            height: 120px;
+        }
+
+        .info-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.8), rgba(20, 184, 166, 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-card-title{
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 0;
+        }
+
+        .card-header .result-card  {
+            background: linear-gradient(red, orange);
+        
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+        .resources-card .card-header {
+            background-image: linear-gradient( #f97316, #ef4444);
+        }
+
+        .resource-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .resource-title {
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .resource-desc {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .result-text {
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .motivational-card {
+                grid-template-columns: 1fr;
+            }
+
+            .rating-options {
+                flex-wrap: wrap;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">
+                <div class="brain-icon">🧠</div>
+                <h1 class="main-title">Depression Predictor</h1>
+            </div>
+            <p class="subtitle">
+                A screening tool to assess depression risk in university students. Please answer all questions honestly
+                for the most accurate assessment.
+            </p>
+        </div>
+    </div>
+
+
+
+    <!-- Motivational Section -->
+    <div class="motivational-section">
+        <div class="motivational-card">
+            <div class="motivational-image">
+                <img src="{{ url_for('static', filename='img2.webp') }}" alt="icon">
+            </div>
+            <div class="motivational-content">
+                <div class="motivational-text">
+                    <h3>Feeling Overwhelmed?</h3>
+                    <p>University life can be challenging. Academic pressure, social expectations, and future
+                        uncertainties can impact your mental health. This assessment helps identify potential concerns
+                        early.</p>
+                    <div class="motivational-highlight">
+                        <span>❤️</span>
+                        <span>Your mental health matters</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+     <!-- Result Card -->
+
+            {% if prediction %}
+            <div class="card" id="resultCard" style="margin-bottom: 30px;">
+                <div class="card-header result-card" style="background: linear-gradient(135deg,rgb(224, 68, 21), rgb(185, 26, 8));">
+                    <h2 style="text-align: center;">Assessment Result</h2>
+                </div>
+                <div class="card-content">
+                    <p class="result-text" style="text-align: center;"><strong>Prediction: {{ prediction }}</strong></p>
+                </div>
+            </div>
+            {% endif %}
+
+
+
+
+
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Form Section -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Assessment Form</h2>
+                <p>Complete all fields to get your depression risk assessment</p>
+            </div>
+            <div class="card-content">
+                <form id="depressionForm" action="/predict" method="POST">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <span class="section-icon">👤</span>
+                            <h3 class="section-title">Personal Information</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Gender</label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input type="radio" name="gender" value="1" id="male" class="radio-input">
+                                        <label for="male">Male</label>
+                                    </div>
+                                    <div class="radio-item">
+                                        <input type="radio" name="gender" value="0" id="female" class="radio-input">
+                                        <label for="female">Female</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" id="age" name="age" min="10" max="40" class="form-input" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="separator"></div>
+
+                    <!-- Academic Information -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <span class="section-icon">🎓</span>
+                            <h3 class="section-title">Academic Information</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="cgpa" class="form-label">CGPA</label>
+                                <input type="number" id="cgpa" name="cgpa" step="0.01" min="1.50" max="4.00"
+                                    class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Residential Status</label>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input type="radio" name="residential_status" value="1" id="hosteller"
+                                            class="radio-input">
+                                        <label for="hosteller">Hosteller</label>
+                                    </div>
+                                    <div class="radio-item">
+                                        <input type="radio" name="residential_status" value="0" id="dayscholar"
+                                            class="radio-input">
+                                        <label for="dayscholar">Day Scholar</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="separator"></div>
+
+                    <!-- Lifestyle -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <span class="section-icon">🌙</span>
+                            <h3 class="section-title">Lifestyle</h3>
+                        </div>
+                        <div class="form-group">
+                            <label for="sleep" class="form-label">Average Sleep (hours per night)</label>
+                            <input type="number" id="sleep" name="average_sleep" step="0.1" min="0" max="12"
+                                class="form-input" style="max-width: 200px;" required>
+                        </div>
+                    </div>
+
+                    <div class="separator"></div>
+
+                    <!-- Well-being Assessment -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <span class="section-icon">❤️</span>
+                            <h3 class="section-title">Well-being Assessment</h3>
+                        </div>
+
+                        <div class="rating-scale">
+                            <div class="rating-header">
+                                <span class="section-icon">📚</span>
+                                <label class="form-label">Academic Workload (1: Low, 5: High)</label>
+                            </div>
+                            <div class="rating-options">
+                                <div class="radio-item">
+                                    <input type="radio" name="academic_workload" value="1" id="w1" class="radio-input">
+                                    <label for="w1">1</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="academic_workload" value="2" id="w2" class="radio-input">
+                                    <label for="w2">2</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="academic_workload" value="3" id="w3" class="radio-input">
+                                    <label for="w3">3</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="academic_workload" value="4" id="w4" class="radio-input">
+                                    <label for="w4">4</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="academic_workload" value="5" id="w5" class="radio-input">
+                                    <label for="w5">5</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rating-scale">
+                            <div class="rating-header">
+                                <span class="section-icon">💰</span>
+                                <label class="form-label">Financial Concerns (1: Low, 5: High)</label>
+                            </div>
+                            <div class="rating-options">
+                                <div class="radio-item">
+                                    <input type="radio" name="financial_concerns" value="1" id="fc1"
+                                        class="radio-input">
+                                    <label for="fc1">1</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="financial_concerns" value="2" id="fc2"
+                                        class="radio-input">
+                                    <label for="fc2">2</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="financial_concerns" value="3" id="fc3"
+                                        class="radio-input">
+                                    <label for="fc3">3</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="financial_concerns" value="4" id="fc4"
+                                        class="radio-input">
+                                    <label for="fc4">4</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="financial_concerns" value="5" id="fc5"
+                                        class="radio-input">
+                                    <label for="fc5">5</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rating-scale">
+                            <div class="rating-header">
+                                <span class="section-icon">👥</span>
+                                <label class="form-label">Social Relationships (1: Poor, 5: Excellent)</label>
+                            </div>
+                            <div class="rating-options">
+                                <div class="radio-item">
+                                    <input type="radio" name="social_relationships" value="1" id="r1"
+                                        class="radio-input">
+                                    <label for="r1">1</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="social_relationships" value="2" id="r2"
+                                        class="radio-input">
+                                    <label for="r2">2</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="social_relationships" value="3" id="r3"
+                                        class="radio-input">
+                                    <label for="r3">3</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="social_relationships" value="4" id="r4"
+                                        class="radio-input">
+                                    <label for="r4">4</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="social_relationships" value="5" id="r5"
+                                        class="radio-input">
+                                    <label for="r5">5</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rating-scale">
+                            <div class="rating-header">
+                                <span class="section-icon">💗</span>
+                                <label class="form-label">Anxiety Levels (1: Low, 5: High)</label>
+                            </div>
+                            <div class="rating-options">
+                                <div class="radio-item">
+                                    <input type="radio" name="anxiety" value="1" id="a1" class="radio-input">
+                                    <label for="a1">1</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="anxiety" value="2" id="a2" class="radio-input">
+                                    <label for="a2">2</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="anxiety" value="3" id="a3" class="radio-input">
+                                    <label for="a3">3</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="anxiety" value="4" id="a4" class="radio-input">
+                                    <label for="a4">4</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="anxiety" value="5" id="a5" class="radio-input">
+                                    <label for="a5">5</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rating-scale">
+                            <div class="rating-header">
+                                <span class="section-icon">🛡️</span>
+                                <label class="form-label">Future Insecurity (1: Low, 5: High)</label>
+                            </div>
+                            <div class="rating-options">
+                                <div class="radio-item">
+                                    <input type="radio" name="future_insecurity" value="1" id="f1" class="radio-input">
+                                    <label for="f1">1</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="future_insecurity" value="2" id="f2" class="radio-input">
+                                    <label for="f2">2</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="future_insecurity" value="3" id="f3" class="radio-input">
+                                    <label for="f3">3</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="future_insecurity" value="4" id="f4" class="radio-input">
+                                    <label for="f4">4</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="future_insecurity" value="5" id="f5" class="radio-input">
+                                    <label for="f5">5</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="button-group">
+                        <button type="submit" class="btn-primary">Get Prediction</button>
+                        <button type="button" class="btn-secondary" onclick="resetForm()">
+                            <span>🔄</span>
+                            Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Info Card -->
+            <div class="card">
+                <div class="info-card-header">
+
+                    <div class="info-card-overlay">
+                        <h3 class="info-card-title">You are Not Alone</h3>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div style="font-size: 0.875rem; color: #6b7280; line-height: 1.6;">
+                        <p style="margin-bottom: 1rem;"><strong>This is a screening tool only.</strong> It cannot
+                            replace professional medical advice, diagnosis, or treatment.</p>
+                        <p style="margin-bottom: 1rem;">If you're experiencing thoughts of self-harm or suicide, please
+                            seek immediate help from a mental health professional or crisis hotline.</p>
+                        <p style="margin: 0;">For accurate diagnosis and treatment, consult with a qualified mental
+                            health professional.</p>
+                    </div>
+                </div>
+            </div>
+
+           
+
+            <!-- Resources Card -->
+            <div class="card">
+                <div class="card-header resources-card">
+                    <h2 style="text-align: center;">Mental Health Resources</h2>
+                </div>
+                <div class="card-content">
+                    <div class="resource-item">
+                        <p class="resource-title">Crisis Hotline</p>
+                        <p class="resource-desc">988 - Suicide & Crisis Lifeline</p>
+                    </div>
+                    <div class="resource-item">
+                        <p class="resource-title">Campus Counseling</p>
+                        <p class="resource-desc">Contact your university's counseling center</p>
+                    </div>
+                    <div class="resource-item">
+                        <p class="resource-title">Online Support</p>
+                        <p class="resource-desc">7cups.com - Free emotional support</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <script>
+        window.onload = function () {
+            const resultCard = document.getElementById("resultCard");
+            if (resultCard && resultCard.style.display !== "none") {
+                resultCard.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+    </script>
+
+</body>
+
+</html>
